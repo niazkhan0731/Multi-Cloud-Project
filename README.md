@@ -10,7 +10,7 @@ The issue arises from the significant increase in the number of guests. Initiall
 ## The Solution
 After a few meetings with the IT director, they decided to use the <b>Google Cloud Platform</b> to host the application due to their existing partnership with Google.
 
-Firstly, a <b>VPC</b> will be created inside the Google Cloud, which is a virtualized network within the GCP. To store the data, <b>Google Cloud SQL</b> will be utilized, as it supports MySQL, which is already present in the on-premises environment. Next, the application that is currently running on the company's on-premises virtual machine will be converged and transformed into a <b>Docker</b> image, which will then be stored inside the <b>Google Container Registry (GCR)</b>.
+Firstly, a <b>VPC</b> will be created inside the Google Cloud, which is a virtualized network within the GCP. To store the data, <b>Google Cloud SQL</b> will be utilized, as it supports <b>MySQL</b>, which is already present in the on-premises environment. Next, the application that is currently running on the company's on-premises virtual machine will be converged and transformed into a <b>Docker</b> image, which will then be stored inside the <b>Google Container Registry (GCR)</b>.
 
 For deploying the application, they have opted to use <b>Kubernetes</b>, an open-source container orchestration platform that automates the deployment, scaling, and management of containerized applications. This Kubernetes will run within the <b>Google Kubernetes Engine (GKE)</b> cluster, and the application will be connected to the Google Cloud SQL database.
 
