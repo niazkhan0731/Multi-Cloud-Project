@@ -18,11 +18,11 @@ During the meetings, the IT Director mentioned that they were already using <b>A
 
 To make both AWS and GCP work seamlessly together, they will establish the necessary connections. Additionally, <b>Terraform</b> will be employed to deploy this environment in a fully automated manner using Infrastructure as Code.
 ## Mission 1: Configuration & Deployment
-First thing first, I created a new AWS IAM user name <b>terraform-en-1</b> and gave it full access to S3 and CLI. I then downloaded the access file and uploaded the <b>accessKeys.csv</b> and the <b>mission1.zip</b> file provided to me by the instructor to the GCP CLI.  
+First things first, I created a new AWS IAM user named <b>terraform-en-1</b> and gave it full access to S3 and CLI. I then downloaded the access file and uploaded the <b>accessKeys.csv</b> and the <b>mission1.zip</b> file provided by the instructor to the GCP CLI. 
 
 <img width="1213" alt="2" src="https://github.com/niazkhan0731/Multi-Cloud-Project/assets/135728087/09954fe1-6fee-4c65-a88c-ec1787791c53">
 <br><br>
-Now its time to make some new directories and unzip the <b>mission1.zip</b> file and also give user execution permission to the to any <b>.sh</b> files that were unzipped. To do this I ran the following commands on the GCP CLI:
+Now it's time to create some new directories and unzip the <b>mission1.zip</b> file. Additionally, we need to give user execution permission to any <b>.sh</b> files that were unzipped. To achieve this, I executed the following commands on the GCP CLI:
 <br><br>
 <b><i>mkdir mission1_en<br>
 mv mission1.zip mission1_en<br>
@@ -33,50 +33,50 @@ cd mission1/en<br>
 chmod +x *.sh</b></i><br><br>
 <img width="1218" alt="3" src="https://github.com/niazkhan0731/Multi-Cloud-Project/assets/135728087/0db8a78d-a3ec-4d8c-9ac1-908b8508badf">
 <br><br>
-Cool now lets run the following command to prepare the AWS and GCP enviornment. This is how Terraform will be able to authenticate with AWS:
+Cool! Now, let's run the following command to prepare the AWS and GCP environments. This step is crucial as it enables Terraform to authenticate with AWS:
 <br><br>
 <b><i></i>./aws_set_credentials.sh accessKeys.csv</b><br><br>
-  Also we will run this command to set the project id on the Google Cloud side where we would like to create the resources in:<br><br>
+  Also, we will run this command to set the project ID on the Google Cloud side where we would like to create the resources:<br><br>
 <b><i>gcloud config set project trans-aurora-393700</b></i>
 <br><br>
 <img width="1214" alt="4" src="https://github.com/niazkhan0731/Multi-Cloud-Project/assets/135728087/42f5bfc9-2f72-4d5b-9184-19392e7af522">
 <br><br>
-Now we will execute this command to set the project id to the cloudshell so when I run Terraform later, it will know in which project it should create the resources in Google Cloud:
+Now we will execute this command to set the project ID to the Cloud Shell, so when I run Terraform later, it will know in which project it should create the resources in Google Cloud:
 <br><br>
 <b><i>./gcp_set_project.sh</i></b>
 <br><br>
-After that we will run these commands to enable the Container Registry API, Kubernetes Engine API and the Cloud SQL API:
+After that, we will run these commands to enable the Container Registry API, Kubernetes Engine API, and the Cloud SQL API:
 <br><br>
 <b><i>gcloud services enable containerregistry.googleapis.com<br>
 gcloud services enable container.googleapis.com<br>
 gcloud services enable sqladmin.googleapis.com </i></b><br><br>
-Next, before executing the Terraform commands, I will first open the Google Editor and update the file <b>tcb_aws_storage.tf</b> replacing the bucket name with an unique name (AWS requires unique bucket names).<br><br>
+Next, before executing the Terraform commands, I will first open the Google Editor and update the file <b>tcb_aws_storage.tf</b>, replacing the bucket name with a unique name (AWS requires unique bucket names).<br><br>
 <img width="1210" alt="5" src="https://github.com/niazkhan0731/Multi-Cloud-Project/assets/135728087/6f4c8a09-1199-470d-89e7-ca1e711b8c41">
 <br><br>
-What this will do is when Terraform runs to create the resources for us on the AWS S3 bucket it will use the unique name <b>luxxy-covid-testing-system-pdf-en-nk73</b> to create it.
+What this will do is when Terraform runs to create the resources for us on the AWS S3 bucket, it will use the unique name <b>luxxy-covid-testing-system-pdf-en-nk73</b> to create it.
 <br><br>
-Now I will save this file on the Google Editor and close out of it by clicking the "Open Terminal" button. Next, we will run the following commands to finish provision infrastructure steps:
+Now I will save this file in the Google Editor and close it by clicking the "Open Terminal" button. Next, we will run the following commands to finish provisioning the infrastructure steps:
 <br><br>
-Let's first go into the folder by typing the command <b><i>cd ~/mission1_en/mission1/en/terraform/</i></b>
+Let's navigate to the folder by typing the command <b><i>cd ~/mission1_en/mission1/en/terraform/</i></b>.
 <br><br>
-Now lets run these commands:<br><br>
-  <b><i>terraform init</b></i> - This will download the plugins required for Terraform to run the code or to communicate with the cloud providers API's. <br><br>
+Now let's run these commands:<br><br>
+<b><i>terraform init</b></i> - This will download the plugins required for Terraform to run the code or to communicate with the cloud providers' APIs. <br><br>
 <img width="1213" alt="6" src="https://github.com/niazkhan0731/Multi-Cloud-Project/assets/135728087/a188dc04-a28f-41ef-a0b7-92af5e73cc40">
 <br><br>
-<b><i>terraform plan</b></i> - This command will look at the files that we have locally here in the cloud shell, and based on those files it will say what Terraform is planning to do in the infrastructure. <br><br>
-  <img width="1204" alt="7" src="https://github.com/niazkhan0731/Multi-Cloud-Project/assets/135728087/67b6d242-65b8-4de1-b1b4-32a00fb6f4bb">
+<b><i>terraform plan</b></i> - This command will look at the files that we have locally here in the cloud shell, and based on those files, it will say what Terraform is planning to do in the infrastructure. <br><br>
+<img width="1204" alt="7" src="https://github.com/niazkhan0731/Multi-Cloud-Project/assets/135728087/67b6d242-65b8-4de1-b1b4-32a00fb6f4bb">
 <br><br>
-<b><i>terraform apply</b></i> - This command will now start creating the resources for us automatically.<br><br>
-  <img width="1207" alt="8" src="https://github.com/niazkhan0731/Multi-Cloud-Project/assets/135728087/0eabb9e9-99e0-407d-8a32-e9118a92df42">
+<b><i>terraform apply</b></i> - This command has started creating the resources for us automatically.<br><br>
+<img width="1207" alt="8" src="https://github.com/niazkhan0731/Multi-Cloud-Project/assets/135728087/0eabb9e9-99e0-407d-8a32-e9118a92df42">
 
-  <br><br>
+<br><br>
 <img width="1212" alt="9" src="https://github.com/niazkhan0731/Multi-Cloud-Project/assets/135728087/979ae245-6c3d-422c-8f23-4d65d46900f2">
 <br><br>
-Cool, so now if we go to our AWS Management Console and search for S3, you can see a bucket was automatically created using the unique name we specified earlier!
+Great! Now, if we go to our AWS Management Console and search for S3, we can see that a bucket was automatically created using the unique name we specified earlier!
 <br><br>
 <img width="1210" alt="10" src="https://github.com/niazkhan0731/Multi-Cloud-Project/assets/135728087/0fb4f4e7-54d1-4640-bcf5-2548f09e05cd">
 <br><br>
-You can also see if we go back to our Google Cloud Console and search for "SQL", the SQL database was also automatically created for us.
+You can also see that if we go back to our Google Cloud Console and search for "SQL", the SQL database was also automatically created for us.
 <br><br>
 <img width="1211" alt="11" src="https://github.com/niazkhan0731/Multi-Cloud-Project/assets/135728087/b62b6404-2805-4199-9ce8-fd883c58dfc0">
 <br><br>
@@ -131,7 +131,7 @@ Next, we will go to our GCP console and navigate to Cloud SQL instance then crea
 <br><br>
 <img width="1476" alt="16" src="https://github.com/niazkhan0731/Multi-Cloud-Project/assets/135728087/fa490bec-9968-4d8d-826e-19b34d4f1c97">
 <br><br>
-Next we're going to go into our Google Cloud Shell and execute the following commands to download and unzil the files for <b>mission2.zip</b>. You can also access these files on this Github repository if you are following along.
+Next, we're going to go into our Google Cloud Shell and execute the following commands to download and unzip the files for <b>mission2.zip</b>. You can also access these files on this Github repository if you are following along.
 <br><br>
 <b><i>cd ~ <br>
 mkdir mission2_en<br>
@@ -158,7 +158,7 @@ exit;</i></b>
 <br><br>
 Next, to move forward with the Docker image creating process we will first enable Cloud Build API inside Cloud Shell using this command: <b><i>gcloud services enable cloudbuild.googleapis.com</i></b>
 <br><br>
-Then we will build the Docker image and push it to Google Container Registry. Please replace the < PROJECT_ID > with your My First Project ID. 
+Then we will build the Docker image and push it to Google Container Registry. Please replace the < PROJECT_ID > with your My First Project ID.
 <br><br>
 <b><i>cd ~/mission2_en/mission2/en/app<br>
 gcloud builds submit --tag gcr.io/< PROJECT_ID >/luxxy-covid-testing-system-app-en</i></b>
@@ -184,7 +184,7 @@ Now we will do the deployment of Kubernetes. First thing we need to do is connec
 <br><br>
 <img width="1173" alt="26" src="https://github.com/niazkhan0731/Multi-Cloud-Project/assets/135728087/103d6e26-5f7c-4c42-94e5-04a95987c09c">
 <br><br>
-Now back in the Cloud Shell lets first type the command <b><i>cd ~/mission2_en/mission2/en/kubernetes</i></b> to go into the directory then type the command <b><i>kubectl apply -f luxxy-covid-testing-system.yaml</i></b> to deploy.
+Now, back in the Cloud Shell lets first type the command <b><i>cd ~/mission2_en/mission2/en/kubernetes</i></b> to go into the directory then type the command <b><i>kubectl apply -f luxxy-covid-testing-system.yaml</i></b> to deploy.
 <img width="1179" alt="27" src="https://github.com/niazkhan0731/Multi-Cloud-Project/assets/135728087/cdf8a7dc-7e9c-4f48-9dbd-1bdd32073291">
 <br><br>
 Lets see, now if we go back to the Kubernetes Engine and click on <b>Services & Ingress</b> then click on the endpoints IP address...
