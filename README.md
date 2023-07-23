@@ -63,7 +63,7 @@ Now lets run these commands:<br><br>
   <b><i>terraform init</b></i> - This will download the plugins required for Terraform to run the code or to communicate with the cloud providers API's. <br><br>
 <img width="1213" alt="6" src="https://github.com/niazkhan0731/Multi-Cloud-Project/assets/135728087/a188dc04-a28f-41ef-a0b7-92af5e73cc40">
 <br><br>
-<b><i></i>terraform plan</b></i> - This command will look at the files that we have locally here in the cloud shell, and based on those files it will say what Terraform is planning to do in the infrastructure. <br><br>
+<b><i>terraform plan</b></i> - This command will look at the files that we have locally here in the cloud shell, and based on those files it will say what Terraform is planning to do in the infrastructure. <br><br>
   <img width="1204" alt="7" src="https://github.com/niazkhan0731/Multi-Cloud-Project/assets/135728087/67b6d242-65b8-4de1-b1b4-32a00fb6f4bb">
 <br><br>
 <b><i>terraform apply</b></i> - This command will now start creating the resources for us automatically.<br><br>
