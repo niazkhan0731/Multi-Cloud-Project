@@ -110,7 +110,8 @@ I will now go into our CloudSQL instance and add a Public Access authorized netw
 PS: For production environments, it is recommended to use only the Private Network for database access. 
 ⚠️  Never grant public network access (0.0.0.0/0) to production databases.
 
-<img width="1206" alt="13" src="https://github.com/niazkhan0731/Multi-Cloud-Project/assets/135728087/713241ee-d869-4819-89d3-86cc2ea23ff9">
+<img width="1211" alt="13" src="https://github.com/niazkhan0731/Multi-Cloud-Project/assets/135728087/cc6d5a47-6384-4350-b11b-7f26cbbd0ac5">
+
 
 
 
