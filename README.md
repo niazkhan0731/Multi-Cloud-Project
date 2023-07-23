@@ -194,6 +194,55 @@ Voila! You can see that our application is now live, and it is currently simulta
 <br><br>
 <img width="1474" alt="29" src="https://github.com/niazkhan0731/Multi-Cloud-Project/assets/135728087/a7a75636-2e69-45a2-a50d-c046fc2e6ed3">
 
-## Mission 3: 
-
-
+## Mission 3: Migrating the data from on-premises to Google Cloud
+<img width="786" alt="30" src="https://github.com/niazkhan0731/Multi-Cloud-Project/assets/135728087/6e222d59-84fe-46ca-8454-790713316af3">
+<br><br>
+As you can see in the diagram above, we were able to successfully build a Docker image with the application server file. We uploaded that image to the Google Container Registry, and then we used it to deploy the application inside the Kubernetes cluster, which is now communicating with Google Cloud SQL and AWS S3. Now, the last thing to do is migrate the data from on-premises to the application now running on Google Cloud.
+<br><br>
+First let's go into our Google Cloud Shell and download the <b>mission3.zip</b> into our CLI. If you've been following along you can also access it on this repository. So in order to do this in our CLI lets run the following commands:
+<br><br>
+<b><i>cd ~<br>
+mkdir mission3_en<br>
+cd mission3_en<br>
+wget https://tcb-public-events.s3.amazonaws.com/icp/mission3.zip<br>
+unzip mission3.zip</i></b>
+<br><br>
+<img width="1177" alt="31" src="https://github.com/niazkhan0731/Multi-Cloud-Project/assets/135728087/2c357707-3a31-4df8-bd17-f366c258cac7">
+<br><br>
+That was simple enough, now lets connect to Cloud SQL MySQL database instance by typing in the command below.
+<br><br>
+<b><i>mysql --host=< public_ip_address > --port=3306 -u app -p</i></b><br> 
+  (Don't forget to replace the < public_ip_address > with yours.)
+<br><br>
+Now we will import the dump on the Cloud SQL by running these commands:
+<br><br>
+<b><i>use dbcovidtesting;<br>
+source ~/mission3_en/mission3/en/db/db_dump.sql</i></b>
+<br><br>
+Now lets type <b><i>select * from records;</i></b> to see if it has been successfully imported correctly.
+<br><br>
+<img width="1177" alt="32" src="https://github.com/niazkhan0731/Multi-Cloud-Project/assets/135728087/ff3d599e-8dfe-42d1-a716-765f719ba02a">
+<br><br>
+Cool! Looks like all the database from the on-premises MySQL server has been successfully migrated! Let's type the <b><i>exit;</i></b> command to exit out of there.
+<br><br>
+    Next we will go into the AWS Management Console and download the PDF files by running these commands:
+    <br><br>
+    <b><i>mkdir mission3_en<br>
+cd mission3_en<br>
+wget https://tcb-public-events.s3.amazonaws.com/icp/mission3.zip<br>
+unzip mission3.zip</i></b>
+<br><br>
+<img width="1469" alt="33" src="https://github.com/niazkhan0731/Multi-Cloud-Project/assets/135728087/8d945ae7-536b-4206-894c-8e21d1b969ad">
+<br><br>
+Next we will sync PDF Files with your AWS S3 used for COVID-19 Testing Status System. Don't forget to replace the bucket name with yours:
+<br><br>
+<b><i>cd mission3/en/pdf_files<br>
+aws s3 sync . s3://luxxy-covid-testing-system-pdf-en-nk73</i></b>
+<br><br>
+<img width="1466" alt="34" src="https://github.com/niazkhan0731/Multi-Cloud-Project/assets/135728087/0620787b-74e9-4cd9-b8a9-0353c1fadba9">
+<br><br>
+As you can see all the PDF files from the old database has been successfully synced to our S3 bucket. If we check back on our live application we can see all the guest data and files was successfully migrated as well.
+    <br><br>
+    <img width="1468" alt="35" src="https://github.com/niazkhan0731/Multi-Cloud-Project/assets/135728087/528bc3ab-b8bb-49d6-b0e6-64420540c162">
+<br><br>
+<b>Ladies and gentlemen, we've reached the end of our project. As you can see, we have successfully migrated an "on-premises" application and database to a MultiCloud Architecture! This project was complex, but I have learned so many things throughout the process, such as building Docker images, utilizing Kubernetes to deploy applications, working with Google Cloud SQL and AWS S3, and managing data migration between on-premises and the cloud. It's been an incredible journey, and I'm looking forward to demonstrating more hands-on projects like this one in the future... Thanks for checking it out!</b>
