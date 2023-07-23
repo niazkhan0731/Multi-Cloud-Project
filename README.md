@@ -17,3 +17,31 @@ For deploying the application, they have opted to use <b>Kubernetes</b>, an open
 During the meetings, the IT Director mentioned that they were already using <b>Amazon S3</b> to store some of their files and were aware that the more they use the S3 service, the cheaper it becomes in terms of unit cost. Therefore, Amazon S3 will be used to store the data related to the web application, which includes the form that the receptionist will fill out with customer's Covid information and the uploaded test result in PDF format.
 
 To make both AWS and GCP work seamlessly together, they will establish the necessary connections. Additionally, <b>Terraform</b> will be employed to deploy this environment in a fully automated manner using Infrastructure as Code.
+## Step 1: Create AWS IAM user and upload the access key and mission files to GCP
+First thing first, I created a new AWS IAM user name <b>terraform-en-1</b> and gave it full access to S3 and CLI. I then downloaded the access file and uploaded the <b>accessKeys.csv</b> and the <b>mission1.zip</b> file provided to me by the instructor to the GCP CLI.  
+
+<img width="1213" alt="2" src="https://github.com/niazkhan0731/Multi-Cloud-Project/assets/135728087/09954fe1-6fee-4c65-a88c-ec1787791c53">
+<br><br>
+Now its time to make some new directories and unzip the <b>mission1.zip</b> file and also give user execution permission to the to any <b>.sh</b> files that were unzipped. To do this I ran the following commands on the GCP CLI:
+<br><br>
+<b><i>>mkdir mission1_en<br>
+>mv mission1.zip mission1_en<br>
+>cd mission1_en<br>
+>unzip mission1.zip<br>
+>mv ~/accessKeys.csv mission1/en<br>
+>cd mission1/en<br>
+>chmod +x *.sh</b></i><br><br>
+<img width="1218" alt="3" src="https://github.com/niazkhan0731/Multi-Cloud-Project/assets/135728087/0db8a78d-a3ec-4d8c-9ac1-908b8508badf">
+<br><br>
+Cool now lets run the following command to prepare the AWS and GCP enviornment. This is how Terraform will be able to authenticate with AWS:
+<br><br>
+<b><i></i>>./aws_set_credentials.sh accessKeys.csv</b><br><br>
+  Also we will run this command to set the project id on the Google Cloud side where we would like to create the resources in:<br><br>
+<b><i>>gcloud config set project trans-aurora-393700</b></i>
+<br><br>
+<img width="1214" alt="4" src="https://github.com/niazkhan0731/Multi-Cloud-Project/assets/135728087/42f5bfc9-2f72-4d5b-9184-19392e7af522">
+<br><br>
+Now we will execute this command to set the project id to the cloudshell so when I run Terraform later, it will know in which project it should create the resources in Google Cloud:
+<br><br>
+<b><i>>./gcp_set_project.sh</i></b>
+
