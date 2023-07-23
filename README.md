@@ -54,4 +54,26 @@ Next, before executing the Terraform commands, I will first open the Google Edit
 <img width="1210" alt="5" src="https://github.com/niazkhan0731/Multi-Cloud-Project/assets/135728087/6f4c8a09-1199-470d-89e7-ca1e711b8c41">
 <br><br>
 What this will do is when Terraform runs to create the resources for us on the AWS S3 bucket it will use the unique name <b>luxxy-covid-testing-system-pdf-en-nk73</b> to create it.
+<br><br>
+Now I will save this file on the Google Editor and close out of it by clicking the "Open Terminal" button. Next, we will run the following commands to finish provision infrastructure steps:
+<br><br>
+Let's first go into the folder by typing the command <b><i>cd ~/mission1_en/mission1/en/terraform/</i></b>
+<br><br>
+Now lets run these commands:<br><br>
+  <b><i>terraform init</b></i> - This will download the plugins required for Terraform to run the code or to communicate with the cloud providers API's. <br><br>
+<img width="1213" alt="6" src="https://github.com/niazkhan0731/Multi-Cloud-Project/assets/135728087/a188dc04-a28f-41ef-a0b7-92af5e73cc40">
+<br><br>
+<b><i></i>terraform plan</b></i> - This command will look at the files that we have locally here in the cloud shell, and based on those files it will say what Terraform is planning to do in the infrastructure. <br><br>
+  <img width="1204" alt="7" src="https://github.com/niazkhan0731/Multi-Cloud-Project/assets/135728087/67b6d242-65b8-4de1-b1b4-32a00fb6f4bb">
+<br><br>
+<b><i>terraform apply</b></i> - This command will now start creating the resources for us automatically.<br><br>
+  <img width="1207" alt="8" src="https://github.com/niazkhan0731/Multi-Cloud-Project/assets/135728087/0eabb9e9-99e0-407d-8a32-e9118a92df42">
+
+  <br><br>
+<img width="1212" alt="9" src="https://github.com/niazkhan0731/Multi-Cloud-Project/assets/135728087/979ae245-6c3d-422c-8f23-4d65d46900f2">
+<br><br>
+Cool, so now if we go to our AWS Management Console and search for S3, you can see a bucket was automatically created using the unique name we specified earlier!
+<br><br>
+<img width="1210" alt="10" src="https://github.com/niazkhan0731/Multi-Cloud-Project/assets/135728087/0fb4f4e7-54d1-4640-bcf5-2548f09e05cd">
+
 
