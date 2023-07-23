@@ -2,7 +2,7 @@
 <img width="897" alt="1" src="https://github.com/niazkhan0731/Multi-Cloud-Project/assets/135728087/9e2c97be-3832-4580-8ee5-f3d1b2155662"><br>
 <br>
 
-Hey Everyone! This is a project I did with <a href="https://thecloudbootcamp.com/en/">The Cloud Bootcamp</a>, based on a real-world scenario where a Luxury Hotel & Resorts company is migrating its on-premises applications and data to the Cloud. Above in the diagram, you can see that I will be demonstrating step by step how I utilized <a href="https://aws.com">AWS</a> and <a href="https://cloud.google.com/">GCP</a> to make this happen!
+Hey Everyone! This is a project I did with <a href="https://thecloudbootcamp.com/en/">The Cloud Bootcamp</a>, based on a real-world scenario where a Luxury Hotel & Resorts company is migrating their on-premises applications and data to the Cloud. Above in the diagram, you can see that I will be demonstrating step by step how I utilized <a href="https://aws.com">AWS</a> and <a href="https://cloud.google.com/">GCP</a> to make this happen!
 ## The Scenario
 Due to the spike in Covid cases, the general manager requested the IT team to create a new application that would centralize all the task results storage. The problem arises from the increasing number of people coming to the hotel without certainty of whether they are infected or not. As a five-star hotel, they are concerned about the safety of both guests and employees. In response to the surge in cases, the general manager proposed a safety precaution: requiring every guest to prove that they are not infected with Covid. As a result, the IT team was asked to create a new application that mandates guests to present a negative test result to the receptionist upon check-in. The receptionist will then scan the test result for documentation purposes. This application will be migrated to the cloud, serving as the central storage for all guest data.
 
@@ -112,7 +112,87 @@ PS: For production environments, it is recommended to use only the Private Netwo
 
 <img width="1211" alt="13" src="https://github.com/niazkhan0731/Multi-Cloud-Project/assets/135728087/cc6d5a47-6384-4350-b11b-7f26cbbd0ac5">
 
+## Mission 2: Docker & Kubernetes
+In this second part of the mission, we will proceed to create a Docker image of the on-premises application server files for the companies and push this image to Google Container Registry (GCP) instance. Later, we will deploy this application using the Kubernetes cluster. Now, you might be wondering, what exactly is Docker?
 
+Docker is a tool that enables you to deploy applications in a highly portable manner by creating an "image." Instead of dealing with the complexities of provisioning virtual machines (VMs), Docker allows you to focus on packaging your application inside this image. Once done, you can use an application that supports the Docker engine, and voilà - your application can be up and running without worries.
+
+Next if  you are wondering, what exactly is Kubernetes? Kubernetes is like an orchestra conductor for containers. Containers are small, self-contained units for running applications. When you have many containers working together, it can be complex to manage individually. That's where Kubernetes comes in! Kubernetes is a smart manager that handles all these containers for you. It's perfect for managing microservices, which are small, independent parts of an application. However, for this project, we will deploy a monolith container that can later be broken down into microservices and managed with Kubernetes as the application grows in complexity and scale.
+
+Now that you have a better understanding of Docker and Kubernetes, let's begin by creating a new IAM user on AWS and naming it <b>luxxy-covid-testing-system-en-app1</b>. The purpose of this is to enable direct communication between Kubernetes on GCP and this user, allowing access to the Amazon S3 bucket later on.
+
+<img width="1420" alt="14" src="https://github.com/niazkhan0731/Multi-Cloud-Project/assets/135728087/5662d153-2ec2-4418-baf7-08ba607b0a3e">
+<br><br>
+Now we will create a new access key for this user and download the <b>.csv</b> file. Then, we'll re-name that file to <b>luxxy-covid-testing-system-en-app1.csv</b> so that we can upload it later to the GCP CLI. This will establish a secure connection between Kubernetes on GCP and the IAM user on AWS.
+<br><br>
+<img width="1406" alt="15" src="https://github.com/niazkhan0731/Multi-Cloud-Project/assets/135728087/79ccb725-5db6-473e-99b2-ac47852f17d6">
+<br><br>
+Next, we will go to our GCP console and navigate to Cloud SQL instance then create a new user <b>app</b> with password <b>welcome123456</b> on Cloud SQL MySQL database.
+<br><br>
+<img width="1476" alt="16" src="https://github.com/niazkhan0731/Multi-Cloud-Project/assets/135728087/fa490bec-9968-4d8d-826e-19b34d4f1c97">
+<br><br>
+Next we're going to go into our Google Cloud Shell and execute the following commands to download and unzil the files for <b>mission2.zip</b>. You can also access these files on this Github repository if you are following along.
+<br><br>
+<b><i>cd ~ <br>
+mkdir mission2_en<br>
+cd mission2_en<br>
+wget https://tcb-public-events.s3.amazonaws.com/icp/mission2.zip<br>
+unzip mission2.zip</b></i>
+<br><br>
+<img width="1180" alt="17" src="https://github.com/niazkhan0731/Multi-Cloud-Project/assets/135728087/c9884bd7-da45-4e9a-8bdb-83ea9c22c4bc">
+<br><br>
+On the Google Cloud Shell we will now connect to MySQL DB running on Cloud SQL (once it prompts for the password, we will provide welcome123456):
+<br><br>
+<b><i>mysql --host="< public_ip_cloudsql >" --port=3306 -u app -p</i></b> Note: Don't forget to replace the "<b>< public_ip_cloudsql ></b>" with your instance IP.
+<br><br>
+<img width="1184" alt="18" src="https://github.com/niazkhan0731/Multi-Cloud-Project/assets/135728087/ddecb047-b463-490e-9d31-c0524597b0ed">
+<br><br>
+Once we are connected to the database instance, we will create the products table for testing purposes using these commands:
+<br><br>
+<b><i>use dbcovidtesting;<br>
+source ~/mission2_en/mission2/en/db/create_table.sql<br>
+show tables;<br>
+exit;</i></b>
+<br><br>
+<img width="1179" alt="19" src="https://github.com/niazkhan0731/Multi-Cloud-Project/assets/135728087/2d79115b-f3cd-4af9-b90d-520779fc3c3b">
+<br><br>
+Next, to move forward with the Docker image creating process we will first enable Cloud Build API inside Cloud Shell using this command: <b><i>gcloud services enable cloudbuild.googleapis.com</i></b>
+<br><br>
+Then we will build the Docker image and push it to Google Container Registry. Please replace the < PROJECT_ID > with your My First Project ID. 
+<br><br>
+<b><i>cd ~/mission2_en/mission2/en/app<br>
+gcloud builds submit --tag gcr.io/< PROJECT_ID >/luxxy-covid-testing-system-app-en</i></b>
+<br><br>
+<img width="1173" alt="20" src="https://github.com/niazkhan0731/Multi-Cloud-Project/assets/135728087/ee86bcf2-13e8-41b7-a5a7-d1c25be892c8">
+<br><br>
+Now once that is completed, if we go to the Google Container Registry (GCR), we can see that it successfully created the image.
+<br><br>
+<img width="1179" alt="21" src="https://github.com/niazkhan0731/Multi-Cloud-Project/assets/135728087/8f47bec7-25a0-4a98-b315-0853633b6182">
+<br><br>
+Next we will open the Cloud Editor and edit the Kubernetes deployment file (<b>luxxy-covid-testing-system.yaml</b>) and update the variables below on line 33 with your <b>< PROJECT_ID > </b> on the Google Container Registry path, on line 42 <b>AWS Bucket name, AWS Keys (open file luxxy-covid-testing-system-en-app1.csv and use Access key ID on line 44 and Secret access key on line 46)</b> and <b>Cloud SQL Database Private IP on line 48</b>.
+<br><br>
+<img width="887" alt="22" src="https://github.com/niazkhan0731/Multi-Cloud-Project/assets/135728087/0cd946d3-0e3e-4c48-9c0b-328a8ea805f3">
+<br>
+<br>
+<img width="1174" alt="23" src="https://github.com/niazkhan0731/Multi-Cloud-Project/assets/135728087/3b17e7ed-3988-486b-8138-7677893c1508">
+<br><br>
+<img width="1173" alt="24" src="https://github.com/niazkhan0731/Multi-Cloud-Project/assets/135728087/1fb3d9e5-2e28-4df9-a62d-6a7676b07a6b">
+<br><br>
+Now we will do the deployment of Kubernetes. First thing we need to do is connect to the Kubernetes cluster via console.
+<br><br>
+<img width="1165" alt="25" src="https://github.com/niazkhan0731/Multi-Cloud-Project/assets/135728087/fbf01c0c-6cc1-45ae-be2f-f6dfc137d25d">
+<br><br>
+<img width="1173" alt="26" src="https://github.com/niazkhan0731/Multi-Cloud-Project/assets/135728087/103d6e26-5f7c-4c42-94e5-04a95987c09c">
+<br><br>
+Now back in the Cloud Shell lets first type the command <b><i>cd ~/mission2_en/mission2/en/kubernetes</i></b> to go into the directory then type the command <b><i>kubectl apply -f luxxy-covid-testing-system.yaml</i></b> to deploy.
+<img width="1179" alt="27" src="https://github.com/niazkhan0731/Multi-Cloud-Project/assets/135728087/cdf8a7dc-7e9c-4f48-9dbd-1bdd32073291">
+<br><br>
+Lets see, now if we go back to the Kubernetes Engine and click on <b>Services & Ingress</b> then click on the endpoints IP address...
+<img width="1177" alt="28" src="https://github.com/niazkhan0731/Multi-Cloud-Project/assets/135728087/9c634fea-bde3-40da-93e0-363639581d72">
+<br><br>
+Voila! You can see that our application is now live. Hooray!
+<br><br>
+<img width="1474" alt="29" src="https://github.com/niazkhan0731/Multi-Cloud-Project/assets/135728087/a7a75636-2e69-45a2-a50d-c046fc2e6ed3">
 
 
 
