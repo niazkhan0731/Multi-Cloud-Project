@@ -75,5 +75,12 @@ Now lets run these commands:<br><br>
 Cool, so now if we go to our AWS Management Console and search for S3, you can see a bucket was automatically created using the unique name we specified earlier!
 <br><br>
 <img width="1210" alt="10" src="https://github.com/niazkhan0731/Multi-Cloud-Project/assets/135728087/0fb4f4e7-54d1-4640-bcf5-2548f09e05cd">
-
+<br><br>
+You can also see if we go back to our Google Cloud Console and search for "SQL", the SQL database was also automatically created for us.
+<br><br>
+<img width="1211" alt="11" src="https://github.com/niazkhan0731/Multi-Cloud-Project/assets/135728087/b62b6404-2805-4199-9ce8-fd883c58dfc0">
+<br><br>
+Now, if we search for "GKE" on the Google Cloud Console and click on Kubernetes Engine, you can see that the Kubernetes cluster was also created for us automatically.
+<br><br>
+<img width="1207" alt="12" src="https://github.com/niazkhan0731/Multi-Cloud-Project/assets/135728087/0a28b02b-38ad-44e3-b9ec-9b9e143debb7">
 
