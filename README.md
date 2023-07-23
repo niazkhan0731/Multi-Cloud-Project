@@ -83,4 +83,35 @@ You can also see if we go back to our Google Cloud Console and search for "SQL",
 Now, if we search for "GKE" on the Google Cloud Console and click on Kubernetes Engine, you can see that the Kubernetes cluster was also created for us automatically.
 <br><br>
 <img width="1207" alt="12" src="https://github.com/niazkhan0731/Multi-Cloud-Project/assets/135728087/0a28b02b-38ad-44e3-b9ec-9b9e143debb7">
+<br><br>
+I will now go into our CloudSQL instance and add a Public Access authorized network (for testing only), to connect remotely in the MySQL instance. To accomplish this I will be doing the following steps (<a href="https://github.com/niazkhan0731/Multi-Cloud-Project/assets/135728087/c29b63cd-8c4e-421b-9475-db489aa1d434">Click Here</a> to download the video).
+<br><br>
+<b>Steps:</b><br>
+- Once the Cloud SQL instance is provisioned, access the Cloud SQL service
+- Click on your Cloud SQL instance.
+- On the left side, under Primary Instance, click on **Connections**.
+- Go to **Networking** tab.
+- Under **Instance IP assignment**, select Private IP to enable.
+    - Under **Associated networking**, select "Default"
+    - Click **Set up Connection**
+    - Click on **Enable API**, to enable Service Networking API (if asked).
+    - Select **Use an automatically allocated IP range in your network**.
+    - Click **Continue**
+    - Click **Create Connection** and **wait a minutes until conclude.** You will see the message: “*Private services access connection for network default
+     has been successfully created.”*
+- Under **Authorized Networks**, click "Add Network".
+- Under **New Network**, enter the following information:
+    - **Name:** Public Access (For testing purposes only)
+    - **Network**: 0.0.0.0/0
+    - Click **Done**.
+    - Click **Save** and ****wait to finish the update.
+    This update may take from **10 to 20 minutes** to finish
+
+PS: For production environments, it is recommended to use only the Private Network for database access. 
+⚠️  Never grant public network access (0.0.0.0/0) to production databases.
+
+<img width="1206" alt="13" src="https://github.com/niazkhan0731/Multi-Cloud-Project/assets/135728087/713241ee-d869-4819-89d3-86cc2ea23ff9">
+
+
+
 
