@@ -17,7 +17,7 @@ For deploying the application, they have opted to use <b>Kubernetes</b>, an open
 During the meetings, the IT Director mentioned that they were already using <b>Amazon S3</b> to store some of their files and were aware that the more they use the S3 service, the cheaper it becomes in terms of unit cost. Therefore, Amazon S3 will be used to store the data related to the web application, which includes the form that the receptionist will fill out with customer's Covid information and the uploaded test result in PDF format.
 
 To make both AWS and GCP work seamlessly together, they will establish the necessary connections. Additionally, <b>Terraform</b> will be employed to deploy this environment in a fully automated manner using Infrastructure as Code.
-## Mission 1: Configuration
+## Mission 1: Configuration & Deployment
 First thing first, I created a new AWS IAM user name <b>terraform-en-1</b> and gave it full access to S3 and CLI. I then downloaded the access file and uploaded the <b>accessKeys.csv</b> and the <b>mission1.zip</b> file provided to me by the instructor to the GCP CLI.  
 
 <img width="1213" alt="2" src="https://github.com/niazkhan0731/Multi-Cloud-Project/assets/135728087/09954fe1-6fee-4c65-a88c-ec1787791c53">
