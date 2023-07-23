@@ -190,7 +190,7 @@ Now back in the Cloud Shell lets first type the command <b><i>cd ~/mission2_en/m
 Lets see, now if we go back to the Kubernetes Engine and click on <b>Services & Ingress</b> then click on the endpoints IP address...
 <img width="1177" alt="28" src="https://github.com/niazkhan0731/Multi-Cloud-Project/assets/135728087/9c634fea-bde3-40da-93e0-363639581d72">
 <br><br>
-Voila! You can see that our application is now live. Hooray!
+Voila! You can see that our application is now live, and it is currently simultaneously communicating with Google Cloud SQL and the Amazon S3 bucket. Hooray! 🎉
 <br><br>
 <img width="1474" alt="29" src="https://github.com/niazkhan0731/Multi-Cloud-Project/assets/135728087/a7a75636-2e69-45a2-a50d-c046fc2e6ed3">
 
